@@ -35,12 +35,12 @@ jobs:
       - run:
           name: Replace PHP Version in Dockerfile
           command: |
-            sed -i 's/FROM php:php-var-alpine/FROM php:$PHP_VERSION-alpine/g' Dockerfile
+            sed -i 's/FROM php:php-var-alpine/FROM php:${PHP_VERSION}-alpine/g' Dockerfile
 
       - run:
           name: Build multiarch docker image and push
           command: |
-            DOCKER_CLI_EXPERIMENTAL=enabled docker buildx build --file ./Dockerfile  --push --tag php-$PHP_VERSION-alpine-wordpress:$IMAGE_TAG --platform=linux/arm64,linux/amd64 .
+            DOCKER_CLI_EXPERIMENTAL=enabled docker buildx build --file ./Dockerfile  --push --tag php-${PHP_VERSION}-alpine-wordpress:$IMAGE_TAG --platform=linux/arm64,linux/amd64 .
 workflows:
   build-and-push-multi-arch-image:
     jobs:
