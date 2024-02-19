@@ -51,5 +51,5 @@ jobs:
         context: .
         push: true
         file: ./Dockerfile
-        tags: k4mrul/php-fpm-${{ env.PHP_VERSION }}-wordpress:${{ env.IMAGE_TAG }}
+        tags: k4mrul/php-${{ env.PHP_VERSION }}-wordpress:${{ env.IMAGE_TAG }}
         platforms: linux/arm64,linux/amd64
