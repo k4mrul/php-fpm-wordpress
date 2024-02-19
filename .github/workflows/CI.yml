@@ -10,6 +10,8 @@ jobs:
   build-push:
     name: Build and Push 
     runs-on: ubuntu-latest
+    env:
+      PHP_VERSION: 7.4-fpm-alpine
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -36,6 +38,12 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_ID }}
         password: ${{ secrets.DOCKER_PW }}
+
+    - name: Set Docker Image
+      # if: ${{ false }}
+      run: |
+        sed -i 's/FROM php:php-var-alpine/FROM php:${{ env.PHP_VERSION }}-alpine/g' Dockerfile
+            
     # Multi architecture build and push
     - name: Build and push application
       uses: docker/build-push-action@v3
@@ -43,6 +51,5 @@ jobs:
         context: .
         push: true
         file: ./Dockerfile
-        tags: k4mrul/php-fpm-wordpress:${{ env.IMAGE_TAG }}
+        tags: k4mrul/php-fpm-${{ env.PHP_VERSION }}-wordpress:${{ env.IMAGE_TAG }}
         platforms: linux/arm64,linux/amd64
-          
