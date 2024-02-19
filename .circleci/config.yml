@@ -15,6 +15,8 @@ commands:
             docker buildx create --use multi-arch-build
 jobs:
   build-push:
+    environment:
+      PHP_VERSION: 7.4-fpm
     machine:
       image: ubuntu-2204:2023.04.2 
     resource_class: large
@@ -26,21 +28,18 @@ jobs:
             IMAGE_TAG="${CIRCLE_SHA1:0:7}"
             echo "export IMAGE_TAG=${IMAGE_TAG}" >> $BASH_ENV   
       - run:
-          name: "Setup PHP version"
-          command: echo 'export PHP_VERSION="7.4-fpm"' >> "$BASH_ENV"
-      - run:
           name: Login to image registry
           command: |
             docker login -u $DOCKER_ID -p $DOCKER_PW
       - run:
           name: Replace PHP Version in Dockerfile
           command: |
-            sed -i 's/FROM php:php-var-alpine/FROM php:${PHP_VERSION}-alpine/g' Dockerfile
+            sed -i 's/FROM php:php-var-alpine/FROM php:$PHP_VERSION-alpine/g' Dockerfile
 
       - run:
           name: Build multiarch docker image and push
           command: |
-            DOCKER_CLI_EXPERIMENTAL=enabled docker buildx build --file ./Dockerfile  --push --tag php-${PHP_VERSION}-alpine-wordpress:$IMAGE_TAG --platform=linux/arm64,linux/amd64 .
+            DOCKER_CLI_EXPERIMENTAL=enabled docker buildx build --file ./Dockerfile  --push --tag php-$PHP_VERSION-alpine-wordpress:$IMAGE_TAG --platform=linux/arm64,linux/amd64 .
 workflows:
   build-and-push-multi-arch-image:
     jobs:
