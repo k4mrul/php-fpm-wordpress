@@ -34,8 +34,8 @@ jobs:
       - run:
           name: Replace PHP Version in Dockerfile
           command: |
-            sed -i 's/FROM php:php-var-alpine/FROM php:$PHP_VERSION-alpine/g' Dockerfile
-
+            echo $PHP_VERSION
+            sed -i "s/FROM php:php-var-alpine/FROM php:$PHP_VERSION-alpine/g" Dockerfile
       - run:
           name: Build multiarch docker image and push
           command: |
