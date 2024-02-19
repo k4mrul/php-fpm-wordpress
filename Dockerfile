@@ -2,7 +2,7 @@ FROM php:php-var-alpine
 
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
-RUN install-php-extensions bcmath ctype curl dom filter ftp gd hash iconv json mbstring mysqli openssl memcache memcached
+RUN install-php-extensions bcmath ctype curl dom filter ftp gd hash iconv json mbstring mysqli openssl memcache memcached imagick
 
 # WORKDIR /app
 
