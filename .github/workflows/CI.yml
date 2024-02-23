@@ -2,9 +2,6 @@ name: Build and deploy
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - "main"
   release:
     types: [created]
 
@@ -14,7 +11,7 @@ jobs:
 
     steps:
     - name: Check if it's a release from main
-      if: github.ref_name == 'main' && github.event_name == 'release'
+      if: github.event_name == 'release'
       run: |
         echo "This is a release event from the main branch"
 
